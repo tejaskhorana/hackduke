@@ -1,5 +1,9 @@
 var game = new Phaser.Game(1200, 800, Phaser.AUTO, 'game_div');
 
+var keyUp, keyDown, keyLeft, keyRight;
+
+var player, person1;
+
 var main_state = {
     preload: function () {
         game.load.image('person', 'assets/Person.png');
@@ -8,15 +12,24 @@ var main_state = {
     },
 
     create: function () {
-        this.person1 = new Person(150, 150);
-        this.person1.setImage(game, 'person');
-        this.player = new Person(125, 250);
-        this.player.setImage(game, 'player');
+        person1 = new Person(150, 150);
+        person1.setImage(game, 'person');
+        player = new Player(125, 250);
+        player.setImage(game, 'player');
 
         this.score = 0;
         this.timer = 10.0;
         this.labelScore = game.add.text(20, 10, "Score: " + this.score.toString(), { font: "30px Arial", fill: "#ffffff" });         
         this.labelScore = game.add.text(20, 40, "Timer: " + this.timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
+
+        keyUp = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+        keyDown = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+        keyLeft = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+        keyRight = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+
+        //key3 = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+        //key3.onDown.add(addPineapple, this);
+
     },
 
     update: function () {
@@ -31,6 +44,20 @@ var main_state = {
             this.labelScore = game.add.text(20, 40, "Timer: " + this.timer.toFixed(2), { font: "30px Arial", fill: "#ffffff" });         
 
         } 
+
+        if (keyUp.isDown) {
+            player.moveUp();
+        }
+        if (keyDown.isDown) {
+            player.moveDown();
+        }
+
+        if (keyLeft.isDown) {
+            player.moveLeft();
+        }
+        if (keyRight.isDown) {
+            player.moveRight();
+        }
     }
 }
 
