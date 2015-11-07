@@ -1,16 +1,19 @@
-var game = new Phaser.Game(400, 490, Phaser.AUTO, 'game_div');
+var game = new Phaser.Game(1200, 800, Phaser.AUTO, 'game_div');
 
 var main_state = {
     preload: function () {
-        game.load.image('hello', 'assets/hello.png');
+        game.load.image('person', 'assets/Person.png');
+        game.load.image('player', 'assets/Player.png');
     },
 
     create: function () {
-        this.hello_sprite = game.add.sprite(200, 245, 'hello');
+        this.person1 = new Person(150, 150);
+        this.person1.setImage(game, 'person');
+        this.player = new Person(125, 250);
+        this.player.setImage(game, 'player');
     },
 
     update: function () {
-        this.hello_sprite.angle += 1;
     }
 }
 
