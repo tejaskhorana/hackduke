@@ -18,6 +18,8 @@ var labelFoodRequired, labelTimer;
 
 var introScreenCounter;
 
+var pokemonTextOne, pokemonTextTwo, pokemonTextThree, pokemonTextFour, pokemonTextFive, pokemonTextCounter, currentPokemonText;
+
 var main_state = {
 
     /*
@@ -59,21 +61,31 @@ var main_state = {
         gameStatus = "intro";
         maxLevels = 5;
 
+        //RESET THIS DURING CLEAN UP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //UNCOMMENT PLZZZZZZZZZZ!!!
         introScreenCounter = 0;
-        game.add.sprite(0, 0, 'background');
+        pokemonTextCounter = 0;
+        initializeAllPokemonText();
+        currentPokemonText = pokemonTextTwo;
+        //game.add.sprite(0, 0, 'background');
 
     },
 
     update: function () {
         
-
             if (gameStatus == "intro") {
 
+
                 if (keyEnter.isDown) {
-                    level = 1;
-                    clearMap();
-                    populateMap();
-                    gameStatus = "in_game";
+
+
+                        level = 1;
+                        clearMap();
+                        populateMap();
+                        gameStatus = "in_game";             
+                    
+
+
                 } else {
                     
                     //alternate the images!
@@ -82,17 +94,17 @@ var main_state = {
                     if(introScreenCounter == 1) {
                         clearMap();
                         game.add.sprite(0,0,'background');
-                    } else if (introScreenCounter == 50) {
+                    } else if (introScreenCounter == 45) {
                         clearMap();
                         game.add.sprite(0,0,'background2');
-                    } else if (introScreenCounter == 100) {
+                    } else if (introScreenCounter == 90) {
                         clearMap();
                         game.add.sprite(0,0,'background');
                         introScreenCounter = 0;
                     }
-
-
                 }
+                
+
 
             }    
             else if(gameStatus == "in_game") {
@@ -120,13 +132,51 @@ var main_state = {
                 console.log("lose");
             } else if (gameStatus == "next_level") {
                 //already incremented level in checkHasWon
-                clearMap();
-                populateMap();
-                gameStatus = "in_game";
+                if(pokemonTextCounter == 0) {
+                    clearMap();
+                }
+
+                if(pokemonTextCounter < pokemonTextOne.length + 1) {
+                    //LOLOLOL
+                    labelFoodRequired = game.add.text(20, 10, currentPokemonText.substring(0,pokemonTextCounter), { font: "30px Arial", fill: "#ffffff" });         
+                    pokemonTextCounter++;
+                }
+
+                if(keyEnter.isDown) {
+                    clearMap();
+                    populateMap();
+                    gameStatus = "in_game";   
+                    pokemonTextCounter = 0; 
+                    nextPokemonText();                
+                }
+
+
             } else if (gameStatus = "restart") {
 
             }
         }
+}
+
+function nextPokemonText() {
+    if(currentPokemonText === pokemonTextOne) {
+        currentPokemonText = pokemonTextTwo;
+    } else if (currentPokemonText === pokemonTextTwo) {
+        currentPokemonText = pokemonTextThree;
+    }else if (currentPokemonText === pokemonTextThree) {
+        currentPokemonText = pokemonTextFour;
+    }else if (currentPokemonText === pokemonTextFour) {
+        currentPokemonText = pokemonTextFive;
+    }else if (currentPokemonText === pokemonTextFive) {
+        currentPokemonText = pokemonTextTwo;
+    }
+}
+
+function initializeAllPokemonText() {
+    pokemonTextOne = "Swiggity Swooty: Level One";
+    pokemonTextTwo = "I'm comin: Level Two";
+    pokemonTextThree = "For dat: Level Three";
+    pokemonTextFour = "boootay: Level Four";
+    pokemonTextFive = "!!!: Level Five";
 }
 
 function clearMap() {
