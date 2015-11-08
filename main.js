@@ -45,21 +45,20 @@ var main_state = {
         game.load.image('background', 'assets/background.png');
         game.load.image('background2', 'assets/background2.png');
 
-
         game.load.image('transitionBackground', 'assets/transitionBackground.png');
 
         game.load.image('deathBackground', 'assets/deathBackground.png');
         game.load.image('liveBackground', 'assets/liveBackground.png');
         game.load.image('walls1', 'assets/level1Walls.bmp');
-        game.load.image('walls2', 'assets/level2Walls.bmp');
-        game.load.image('walls3', 'assets/level3Walls.bmp');
-        game.load.image('walls4', 'assets/level4Walls.bmp');
-        game.load.image('walls5', 'assets/level5Walls.bmp');
+        //game.load.image('walls2', 'assets/level2Walls.bmp');
+        //game.load.image('walls3', 'assets/level3Walls.bmp');
+        //game.load.image('walls4', 'assets/level4Walls.bmp');
+        //game.load.image('walls5', 'assets/level5Walls.bmp');
         game.load.image('level1bg', 'assets/level1bg.png');
-        game.load.image('level2bg', 'assets/level2bg.png');
-        game.load.image('level3bg', 'assets/level3bg.png');
-        game.load.image('level4bg', 'assets/level4bg.png');
-        game.load.image('level5bg', 'assets/level5bg.png');
+        //game.load.image('level2bg', 'assets/level2bg.png');
+        //game.load.image('level3bg', 'assets/level3bg.png');
+        //game.load.image('level4bg', 'assets/level4bg.png');
+        //game.load.image('level5bg', 'assets/level5bg.png');
     },
 
 
@@ -172,7 +171,7 @@ var main_state = {
                     labelFoodRequired = game.add.text(175, 140, currentPokemonText.substring(0,pokemonTextCounter), { font: "24px Telugu", fill: "#000000" });         
                     labelFoodRequired.fixedToCamera = true;
                     
-                    pokemonTextCounter++;
+                    pokemonTextCounter += 2;
                 }
 
                 if(keyEnter.isDown && !(pokemonTextCounter < currentPokemonText.length + 1)) {
@@ -255,7 +254,7 @@ function checkAllFoods() {
         if(collides(player, foodArray[i])) {
             this.game.world.remove(foodArray[i].img);
             foodArray.splice(i, 1);
-            foodCollected = foodCollected + 7;
+            foodCollected++;
             this.game.world.remove(labelFoodRequired);
             labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
             labelFoodRequired.fixedToCamera = true;
@@ -355,66 +354,82 @@ function populateMap() {
 
     if(level == 1) {
         
-        foodRequired = 20;
+        foodRequired = 5;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
         labelFoodRequired.fixedToCamera = true;
 
-        timer = 50.0;
+        timer = 150.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
         labelTimer.fixedToCamera = true;
+
         //initialize ALL food in designated spots and assign to an array
-        food1 = new Food(2923, 340);
-        food1.setImage(game, 'food1');
-        food2 = new Food(2750, 330);
-        food2.setImage(game, 'food2');
-        food3 = new Food(1190, 827);
-        food3.setImage(game, 'food3');
-        food4 = new Food(1737, 370);
-        food4.setImage(game, 'food4');
-        food5 = new Food(300, 2648);
-        food5.setImage(game, 'food5');
-        food6 = new Food(100, 2584);
-        food6.setImage(game, 'food1');
-        food7 = new Food(1487, 2689);
-        food7.setImage(game, 'food2');
-        food8 = new Food(322, 3702);
-        food8.setImage(game, 'food3');
-        food9 = new Food(250, 3812);
-        food9.setImage(game, 'food4');
-        food10 = new Food(400, 3480);
-        food10.setImage(game, 'food5');
-        foodArray = [food1, food2, food3, food4, food5, food6, food7, food8, food9, food10];          
+        foodArray = [];
+        foodArray.push(new Food(1045, 1200));
+        foodArray[0].setImage(game, 'food1');
+        foodArray.push(new Food(1130, 1200));
+        foodArray[1].setImage(game, 'food2');
+        foodArray.push(new Food(1341, 969));
+        foodArray[2].setImage(game, 'food3');
+        foodArray.push(new Food(586, 2085));
+        foodArray[3].setImage(game, 'food4');
+        foodArray.push(new Food(3130, 1200));
+        foodArray[4].setImage(game, 'food5');
+        foodArray.push(new Food(3180, 1200));
+        foodArray[5].setImage(game, 'food3');
+        foodArray.push(new Food(3250, 1200));
+        foodArray[6].setImage(game, 'food2');
+        foodArray.push(new Food(480, 1200));
+        foodArray[7].setImage(game, 'food1');
+        foodArray.push(new Food(1470, 2650));
+        foodArray[8].setImage(game, 'food2');
+        foodArray.push(new Food(665, 2450));
+        foodArray[9].setImage(game, 'food2');
+        foodArray.push(new Food(1045, 3257));
+        foodArray[10].setImage(game, 'food1');
+        foodArray.push(new Food(1005, 3685));
+        foodArray[11].setImage(game, 'food1');
+        foodArray.push(new Food(1005, 3735));
+        foodArray[12].setImage(game, 'food1');
+        foodArray.push(new Food(1005, 3790));
+        foodArray[13].setImage(game, 'food1');
 
     } else if (level == 2) {
 
-        foodRequired = 25;
+        foodRequired = 3;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
         labelFoodRequired.fixedToCamera = true;
 
-        timer = 45.0;
+        timer = 150.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
         labelTimer.fixedToCamera = true;
 
-        food1 = new Food(2923, 340);
-        food1.setImage(game, 'food1');
-        food2 = new Food(2750, 330);
-        food2.setImage(game, 'food2');
-        food3 = new Food(1190, 827);
-        food3.setImage(game, 'food3');
-        food4 = new Food(1737, 370);
-        food4.setImage(game, 'food4');
-        food5 = new Food(300, 2648);
-        food5.setImage(game, 'food5');
-        food6 = new Food(100, 2584);
-        food6.setImage(game, 'food1');
-        food7 = new Food(1487, 2689);
-        food7.setImage(game, 'food2');
-        foodArray = [food1, food2, food3, food4, food5, food6, food7];          
+        foodArray = [];
+        foodArray.push(new Food(1130, 1200));
+        foodArray[0].setImage(game, 'food2');
+        foodArray.push(new Food(1341, 969));
+        foodArray[1].setImage(game, 'food3');
+        foodArray.push(new Food(3130, 1200));
+        foodArray[2].setImage(game, 'food5');
+        foodArray.push(new Food(3250, 1200));
+        foodArray[3].setImage(game, 'food2');
+        foodArray.push(new Food(480, 1200));
+        foodArray[4].setImage(game, 'food3');
+        foodArray.push(new Food(1470, 2650));
+        foodArray[5].setImage(game, 'food2');
+        foodArray.push(new Food(1045, 3257));
+        foodArray[6].setImage(game, 'food1');
+        foodArray.push(new Food(1005, 3735));
+        foodArray[7].setImage(game, 'food3');
+        foodArray.push(new Food(3615, 2500));
+        foodArray[8].setImage(game, 'food5');
+        foodArray.push(new Food(3805, 2695));
+        foodArray[9].setImage(game, 'food4');
+
     } else if (level == 3) {
 
-        foodRequired = 40;
+        foodRequired = 3;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
         labelFoodRequired.fixedToCamera = true;
@@ -423,42 +438,29 @@ function populateMap() {
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
         labelTimer.fixedToCamera = true;
 
-        food1 = new Food(2923, 340);
-        food1.setImage(game, 'food1');
-        food2 = new Food(2750, 330);
-        food2.setImage(game, 'food2');
-        food3 = new Food(1190, 827);
-        food3.setImage(game, 'food3');
-        food4 = new Food(1737, 370);
-        food4.setImage(game, 'food4');
-        food5 = new Food(300, 2648);
-        food5.setImage(game, 'food5');
-        food6 = new Food(100, 2584);
-        food6.setImage(game, 'food1');
-        food7 = new Food(1487, 2689);
-        food7.setImage(game, 'food2');
-        foodArray = [food1, food2, food3, food4, food5, food6, food7];          
+        foodArray = [];
+        foodArray.push(new Food(1130, 1200));
+        foodArray[0].setImage(game, 'food2');
+        foodArray.push(new Food(3130, 1200));
+        foodArray[1].setImage(game, 'food5');
+        foodArray.push(new Food(3250, 1200));
+        foodArray[2].setImage(game, 'food2');
+        foodArray.push(new Food(480, 1200));
+        foodArray[3].setImage(game, 'food3');
+        foodArray.push(new Food(1470, 2650));
+        foodArray[4].setImage(game, 'food2');
 
     } else if (level == 4) {
 
-        food1 = new Food(2923, 340);
-        food1.setImage(game, 'food1');
-        food2 = new Food(2750, 330);
-        food2.setImage(game, 'food2');
-        food3 = new Food(1190, 827);
-        food3.setImage(game, 'food3');
-        food4 = new Food(1737, 370);
-        food4.setImage(game, 'food4');
-        food5 = new Food(300, 2648);
-        food5.setImage(game, 'food5');
-        food6 = new Food(100, 2584);
-        food6.setImage(game, 'food1');
-        food7 = new Food(1487, 2689);
-        food7.setImage(game, 'food2');
+        foodArray = [];
+        foodArray.push(new Food(3250, 1200));
+        foodArray[0].setImage(game, 'food3');
+        foodArray.push(new Food(1470, 2650));
+        foodArray[1].setImage(game, 'food2');
+        foodArray.push(new Food(3930, 3065));
+        foodArray[2].setImage(game, 'food4');
 
-        foodArray = [food1, food2, food3, food4, food5, food6, food7];          
-
-        foodRequired = 35;
+        foodRequired = 3;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
         labelFoodRequired.fixedToCamera = true;
