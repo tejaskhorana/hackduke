@@ -66,7 +66,7 @@ var main_state = {
         introScreenCounter = 0;
         pokemonTextCounter = 0;
         initializeAllPokemonText();
-        currentPokemonText = pokemonTextTwo;
+        currentPokemonText = pokemonTextOne;
         //game.add.sprite(0, 0, 'background');
 
     },
@@ -80,9 +80,7 @@ var main_state = {
 
 
                         level = 1;
-                        clearMap();
-                        populateMap();
-                        gameStatus = "in_game";             
+                        gameStatus = "next_level";             
                     
 
 
@@ -136,13 +134,13 @@ var main_state = {
                     clearMap();
                 }
 
-                if(pokemonTextCounter < pokemonTextOne.length + 1) {
+                if(pokemonTextCounter < currentPokemonText.length + 1) {
                     //LOLOLOL
                     labelFoodRequired = game.add.text(20, 10, currentPokemonText.substring(0,pokemonTextCounter), { font: "30px Arial", fill: "#ffffff" });         
                     pokemonTextCounter++;
                 }
 
-                if(keyEnter.isDown) {
+                if(keyEnter.isDown && !(pokemonTextCounter < currentPokemonText.length + 1)) {
                     clearMap();
                     populateMap();
                     gameStatus = "in_game";   
