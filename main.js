@@ -12,9 +12,11 @@ var person1, person2, person3;
 var foodArray;
 var food1, food2, food3, food4;
 
-var score, timer, gameStatus;
+var foodRequired, foodCollected, timer, gameStatus;
 
-var labelScore, labelTimer;
+var labelFoodRequired, labelTimer;
+
+var gameInSession;
 
 var main_state = {
 
@@ -34,7 +36,6 @@ var main_state = {
         game.load.image('food3', 'assets/food3.png');
         game.load.image('food4', 'assets/food4.png');
 
-        gameStatus = 'in_game';
     },
 
 
@@ -43,9 +44,6 @@ var main_state = {
          this will be called repeatedly as the levels increase.
     */
     create: function () {
-        //SET UP SCORE for the entire game.
-        score = 0;
-        labelScore = game.add.text(20, 10, "Score: " + score.toString(), { font: "30px Arial", fill: "#ffffff" });         
 
         //SET UP KEYSTROKES for the entire game.
         keyUp = game.input.keyboard.addKey(Phaser.Keyboard.UP);
@@ -55,28 +53,62 @@ var main_state = {
 
         //SET UP rest of map. Will change per level
         level = 1;
+        gameStatus = 'in_game';
         maxLevels = 5;
-        populateMap(1);
+        populateMap();
+        gameInSession = true;
 
     },
 
     update: function () {
+        
+            if(gameStatus == "in_game") {
+                //move all people on map
+                moveAllPeople();
 
-        //move all people on map
-        moveAllPeople();
+                //check to see if player is on any food boxes
+                checkAllFoods();
 
-        //check to see if player is on any food boxes
-        checkAllFoods();
+                //allow player to move
+                playControl();
 
-        //allow player to move
-        playControl();
+                //check to see if user has collected all adequate food
+                checkHasWon();
 
-        //update the timer
-        updateTimer();
+                //update the timer
+                updateTimer();
 
-        //check to see if the user has lost
-        checkHasLost();
+                //check to see if the user has lost
+                checkHasLost();
+            } else if (gameStatus == "win") {
+                // go to end game page
+                console.log("win");
+            } else if (gameStatus === "lose") {
+                // go to appropriate losing page
+                console.log("lose");
+            } else if (gameStatus == "next_level") {
+                //already incremented level in checkHasWon
+                clearMap();
+                populateMap();
+                gameStatus = "in_game";
+            } else if (gameStatus = "restart") {
 
+            }
+        }
+}
+
+function clearMap() {
+    game.world.removeAll();
+}
+
+function checkHasWon() {
+    if(foodCollected >= foodRequired) {
+        if(level == 5) {
+            gameStatus = "win";
+        } else {
+            gameStatus = "next_level";
+            level = level + 1;
+        }
     }
 }
 
@@ -89,7 +121,6 @@ function moveAllPeople() {
         if(personArray[i].y < personArray[i].lowerYBound || personArray[i].y > personArray[i].upperYBound) {
             personArray[i].yVelocity = personArray[i].yVelocity*-1;
         }
-        console.log(personArray[i].xVelocity);
         personArray[i].x += 2*personArray[i].xVelocity;
         personArray[i].y += 2*personArray[i].yVelocity;
         this.game.world.remove(personArray[i].img);
@@ -103,9 +134,9 @@ function checkAllFoods() {
         if(collides(player, foodArray[i])) {
             this.game.world.remove(foodArray[i].img);
             foodArray.splice(i, 1);
-            score = score + 5;
-            this.game.world.remove(labelScore);
-            labelScore = game.add.text(20, 10, "Score: " + score, { font: "30px Arial", fill: "#ffffff" });         
+            foodCollected = foodCollected + 5;
+            this.game.world.remove(labelFoodRequired);
+            labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
             i = i - 1;
         }
     }
@@ -115,7 +146,7 @@ function checkAllFoods() {
     updates whether lost with timer
 */
 function checkHasLost() {
-    if(timer == 0) {
+    if(timer == 0 && gameStatus == 'in_game') {
         gameStatus = 'lose';
     }
 }
@@ -155,12 +186,152 @@ function playControl() {
         }    
 }
 
+
+function collides(a, b)
+{
+    if(a == null || b == null) {
+        return false;
+    }
+    if (a.x < b.x + b.img.width &&
+        a.x + a.img.width > b.x &&
+        a.y < b.y + b.img.height &&
+        a.y + a.img.height > b.y) return true;
+}
+
 /*
     initial populating of map before every level
 */
-function populateMap(level) {
+function populateMap() {
 
     if(level == 1) {
+        foodRequired = 20;
+        foodCollected = 0;
+        labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+
+        timer = 10.0;
+        labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
+
+        //initialize ALL persons in designated spots and assign to an array
+        person1 = new Person(450, 450, 100, 40, (Math.random()-.5)*4, (Math.random()-.5)*5);
+        person1.setImage(game, 'person1');
+        person2 = new Person(350, 250, 70, 70, (Math.random()-.5)*5, (Math.random()-.5)*8);
+        person2.setImage(game, 'person2');
+        person3 = new Person(550, 350, 100, 100, (Math.random()-.5)*8, (Math.random()-.5)*5);
+        person3.setImage(game, 'person3');
+
+        personArray = [person1, person2, person3];
+
+        player = new Player(125, 250);
+        player.setImage(game, 'player');
+
+        //initialize ALL food in designated spots and assign to an array
+        food1 = new Food(155, 165);
+        food1.setImage(game, 'food1');
+        food2 = new Food(255, 165);
+        food2.setImage(game, 'food2');
+        food3 = new Food(355, 165);
+        food3.setImage(game, 'food3');
+        food4 = new Food(355, 65);
+        food4.setImage(game, 'food4');
+        foodArray = [food1, food2, food3, food4];         
+    } else if (level == 2) {
+        foodRequired = 20;
+        foodCollected = 0;
+        labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+
+        timer = 10.0;
+        labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
+
+        //initialize ALL persons in designated spots and assign to an array
+        person1 = new Person(450, 450, 100, 40, (Math.random()-.5)*4, (Math.random()-.5)*5);
+        person1.setImage(game, 'person1');
+        person2 = new Person(350, 250, 70, 70, (Math.random()-.5)*5, (Math.random()-.5)*8);
+        person2.setImage(game, 'person2');
+        person3 = new Person(550, 350, 100, 100, (Math.random()-.5)*8, (Math.random()-.5)*5);
+        person3.setImage(game, 'person3');
+
+        personArray = [person1, person2, person3];
+
+        player = new Player(125, 250);
+        player.setImage(game, 'player');
+
+        //initialize ALL food in designated spots and assign to an array
+        food1 = new Food(155, 165);
+        food1.setImage(game, 'food1');
+        food2 = new Food(255, 165);
+        food2.setImage(game, 'food2');
+        food3 = new Food(355, 165);
+        food3.setImage(game, 'food3');
+        food4 = new Food(355, 65);
+        food4.setImage(game, 'food4');
+        foodArray = [food1, food2, food3, food4];  
+    } else if (level == 3) {
+        foodRequired = 20;
+        foodCollected = 0;
+        labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+
+        timer = 10.0;
+        labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
+
+        //initialize ALL persons in designated spots and assign to an array
+        person1 = new Person(450, 450, 100, 40, (Math.random()-.5)*4, (Math.random()-.5)*5);
+        person1.setImage(game, 'person1');
+        person2 = new Person(350, 250, 70, 70, (Math.random()-.5)*5, (Math.random()-.5)*8);
+        person2.setImage(game, 'person2');
+        person3 = new Person(550, 350, 100, 100, (Math.random()-.5)*8, (Math.random()-.5)*5);
+        person3.setImage(game, 'person3');
+
+        personArray = [person1, person2, person3];
+
+        player = new Player(125, 250);
+        player.setImage(game, 'player');
+
+        //initialize ALL food in designated spots and assign to an array
+        food1 = new Food(155, 165);
+        food1.setImage(game, 'food1');
+        food2 = new Food(255, 165);
+        food2.setImage(game, 'food2');
+        food3 = new Food(355, 165);
+        food3.setImage(game, 'food3');
+        food4 = new Food(355, 65);
+        food4.setImage(game, 'food4');
+        foodArray = [food1, food2, food3, food4];          
+    } else if (level == 4) {
+        foodRequired = 20;
+        foodCollected = 0;
+        labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+
+        timer = 10.0;
+        labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
+
+        //initialize ALL persons in designated spots and assign to an array
+        person1 = new Person(450, 450, 100, 40, (Math.random()-.5)*4, (Math.random()-.5)*5);
+        person1.setImage(game, 'person1');
+        person2 = new Person(350, 250, 70, 70, (Math.random()-.5)*5, (Math.random()-.5)*8);
+        person2.setImage(game, 'person2');
+        person3 = new Person(550, 350, 100, 100, (Math.random()-.5)*8, (Math.random()-.5)*5);
+        person3.setImage(game, 'person3');
+
+        personArray = [person1, person2, person3];
+
+        player = new Player(125, 250);
+        player.setImage(game, 'player');
+
+        //initialize ALL food in designated spots and assign to an array
+        food1 = new Food(155, 165);
+        food1.setImage(game, 'food1');
+        food2 = new Food(255, 165);
+        food2.setImage(game, 'food2');
+        food3 = new Food(355, 165);
+        food3.setImage(game, 'food3');
+        food4 = new Food(355, 65);
+        food4.setImage(game, 'food4');
+        foodArray = [food1, food2, food3, food4];          
+    } else if (level == 5) {
+         foodRequired = 20;
+        foodCollected = 0;
+        labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+
         timer = 10.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
 
@@ -189,19 +360,6 @@ function populateMap(level) {
         foodArray = [food1, food2, food3, food4];         
     }
 }
-
-
-function collides(a, b)
-{
-    if(a == null || b == null) {
-        return false;
-    }
-    if (a.x < b.x + b.img.width &&
-        a.x + a.img.width > b.x &&
-        a.y < b.y + b.img.height &&
-        a.y + a.img.height > b.y) return true;
-}
-
 
 game.state.add('main', main_state);
 game.state.start('main');
