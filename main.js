@@ -34,6 +34,7 @@ var main_state = {
         game.load.image('person3', 'assets/person3.png');
 
         game.load.image('player', 'assets/Player.png');
+        game.load.image('playerBig', 'assets/playerBig.png');
 
         game.load.image('food1', 'assets/food1.png');
         game.load.image('food2', 'assets/food2.png');
@@ -162,6 +163,7 @@ var main_state = {
                 if(pokemonTextCounter == 0) {
                     clearMap();
                     var bg = game.add.sprite(0,0,'transitionBackground');
+                    var characterIcon = game.add.sprite(770,230,'playerBig');
                     bg.fixedToCamera = true;
                 }
 
@@ -360,7 +362,7 @@ function populateMap() {
 
         timer = 50.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
-
+        labelTimer.fixedToCamera = true;
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(2923, 340);
         food1.setImage(game, 'food1');
@@ -393,7 +395,7 @@ function populateMap() {
 
         timer = 45.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
-
+        labelTimer.fixedToCamera = true;
 
         food1 = new Food(2923, 340);
         food1.setImage(game, 'food1');
@@ -419,6 +421,7 @@ function populateMap() {
 
         timer = 35.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
+        labelTimer.fixedToCamera = true;
 
         food1 = new Food(2923, 340);
         food1.setImage(game, 'food1');
@@ -462,7 +465,7 @@ function populateMap() {
 
         timer = 20.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
-
+        labelTimer.fixedToCamera = true;
     } 
 
 }
