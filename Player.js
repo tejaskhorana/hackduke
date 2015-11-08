@@ -8,7 +8,7 @@ function Player(x, y) {
 
     this.moveUp = function(bmd) {
         // Make sure player can move
-        if ((bmd.getPixel32(Math.floor(this.img.body.x), Math.floor(this.img.body.y - 3)) & 0xFF) < 255) {
+        if ((bmd.getPixel32(Math.floor(this.img.body.x), Math.floor(this.img.body.y - 5)) & 0xFF) < 255) {
             return;
         }
         this.img.body.moveUp(250);
@@ -16,7 +16,7 @@ function Player(x, y) {
 
     this.moveDown = function(bmd) {
         // Make sure player can move
-        if ((bmd.getPixel32(Math.floor(this.img.body.x), Math.floor(this.img.body.y + 3)) & 0xFF) < 255) {
+        if ((bmd.getPixel32(Math.floor(this.img.body.x), Math.floor(this.img.body.y + 5)) & 0xFF) < 255) {
             return;
         }
         player.img.body.moveDown(250);
@@ -24,7 +24,7 @@ function Player(x, y) {
 
     this.moveLeft = function(bmd) {
         // Make sure player can move
-        if ((bmd.getPixel32(Math.floor(this.img.body.x - 3), Math.floor(this.img.body.y)) & 0xFF) < 255) {
+        if ((bmd.getPixel32(Math.floor(this.img.body.x - 5), Math.floor(this.img.body.y)) & 0xFF) < 255) {
             return;
         }
         player.img.body.moveLeft(250);
@@ -32,7 +32,7 @@ function Player(x, y) {
 
     this.moveRight = function(bmd) {
         // Make sure player can move
-        if ((bmd.getPixel32(Math.floor(this.img.body.x + 3), Math.floor(this.img.body.y)) & 0xFF) < 255) {
+        if ((bmd.getPixel32(Math.floor(this.img.body.x + 5), Math.floor(this.img.body.y)) & 0xFF) < 255) {
             return;
         }
         player.img.body.moveRight(250);

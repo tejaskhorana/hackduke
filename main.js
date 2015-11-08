@@ -163,6 +163,7 @@ var main_state = {
                     clearMap();
                     var bg = game.add.sprite(0,0,'transitionBackground');
                     var characterIcon = game.add.sprite(770,230,'playerBig');
+                    characterIcon.fixedToCamera = true;
                     bg.fixedToCamera = true;
                 }
 
@@ -211,9 +212,9 @@ function nextPokemonText() {
 }
 
 function initializeAllPokemonText() {
-    pokemonTextOne = "Welcome to the top level of the Tower! In this\n world, Dante is a rich businessman and founder\n of a massive software company called\n Macrosoft. He has several key executives\n working underneath him and therefore only has\n to work a few hours a day. He has\n plenty of money and time, free to enjoy the luxu-\nries of the Tower. His house is nice and spacious,\n the epitome of modern decadence.\n Today, Dante has to eat three meals, put in a\n few hours of work at the Macrosoft building next\n door, and just enjoy the town before he has to\n head back home to catch some sleep.\n Good luck!.... HIT ENTER";
-    pokemonTextTwo = "Welcome to the second level of the Tower! In\n this world, Dante is a branch manager of\n Moontrust, the only bank in the Tower. he has\n a couple of employees working for him, but he\n still has to work one shift a day. he is fairly well\n off, and he and his wife enjoy their life in the\n Tower. his house is pretty nice, though they\n have to share the other half with another resi-\n dent. \n Today, Dante just has to eat three meals, \nput in some hours of work at the bank, and \nmaybe have a short walk around town before \nhe heads back home to go to bed. Good luck!\n.... HIT ENTER";
-    pokemonTextThree = "Welcome to the third level of the Tower. In\n this world, Dante is a clerk at the grocery\n store, Jingles. He works two shifts and is\n under a fair amount of stress every day.\n He can barely support his family of\n three and he barely has time to eat,\n let alone enjoy himself.\n His family share the house with three other\n families, and it is often dank and cramped.\n Today, Dante has to eat three meals, put in\n several hours of work at the store, and make\n sure he gets everything done in time before\n he needs to sleep. Good luck.... HIT ENTER";
+    pokemonTextOne = "Welcome to the top level of the Tower! In this\n world, Dante is a rich businessman and founder\n of a massive software company called\n Macrosoft. He has several key executives\n working underneath him and therefore only has\n to work a few hours a day. He has\n plenty of money and time, free to enjoy the luxu-\nries of the Tower. His house is nice and spacious,\n the epitome of modern decadence.\n Today, Dante has to eat three meals, put in a\n few hours of work at the Macrosoft building next\n door, and just enjoy the town before he has to\n head back home to catch some sleep.\n Good luck!.... HIT ENTER!";
+    pokemonTextTwo = "Welcome to the second level of the Tower! In\n this world, Dante is a branch manager of\n Moontrust, the only bank in the Tower. he has\n a couple of employees working for him, but he\n still has to work one shift a day. he is fairly well\n off, and he and his wife enjoy their life in the\n Tower. his house is pretty nice, though they\n have to share the other half with another resi-\n dent. \n Today, Dante just has to eat three meals, \nput in some hours of work at the bank, and \nmaybe have a short walk around town before \nhe heads back home to go to bed. Good luck!\n.... HIT ENTER!";
+    pokemonTextThree = "Welcome to the third level of the Tower. In\n this world, Dante is a clerk at the grocery\n store, Jingles. He works two shifts and is\n under a fair amount of stress every day.\n He can barely support his family of\n three and he barely has time to eat,\n let alone enjoy himself.\n His family share the house with three other\n families, and it is often dank and cramped.\n Today, Dante has to eat three meals, put in\n several hours of work at the store, and make\n sure he gets everything done in time before\n he needs to sleep. Good luck!\n.... HIT ENTER!";
     pokemonTextFour = "Welcome to the bottom level of the Tower. In this\n world, Dante is a poor waiter at Outfront, a\n restaurant in the corner of town. he alone has to\n support his family of four, and therefore he works\n the entire day at the restaurant. he does not even\n have enough money to afford to eat there; he has to\n get his food at the store after work before it closes.\n Dante is often stressed and tired, but there is nothing\n he can do about it. his family shares their meager\n quarters with six other families in their building.\n Today, Dante just has to eat three meals, work at\n the restaurant for most of the day, go to the store\n before it closes, and make it back home to get\n enough sleep for the next day.\n Good luck! .... HIT ENTER!";
 }
 
@@ -316,10 +317,10 @@ function collides(a, b)
     if(a == null || b == null) {
         return false;
     }
-    if (a.img.x < b.img.x + b.img.width &&
-        a.img.x + a.img.width > b.img.x &&
-        a.img.y < b.img.y + b.img.height &&
-        a.img.y + a.img.height > b.img.y) return true;
+    if (a.img.x < b.img.x + b.img.width + 5 &&
+        a.img.x + a.img.width > b.img.x - 5&&
+        a.img.y < b.img.y + b.img.height + 5&&
+        a.img.y + a.img.height > b.img.y - 5) return true;
 }
 
 /*
@@ -354,7 +355,7 @@ function populateMap() {
 
     if(level == 1) {
         
-        foodRequired = 5;
+        foodRequired = 3;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
         labelFoodRequired.fixedToCamera = true;
@@ -434,7 +435,7 @@ function populateMap() {
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
         labelFoodRequired.fixedToCamera = true;
 
-        timer = 35.0;
+        timer = 150.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
         labelTimer.fixedToCamera = true;
 
@@ -465,7 +466,7 @@ function populateMap() {
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
         labelFoodRequired.fixedToCamera = true;
 
-        timer = 20.0;
+        timer = 150.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
         labelTimer.fixedToCamera = true;
     } 
