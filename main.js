@@ -39,7 +39,7 @@ var main_state = {
         game.load.image('food2', 'assets/food2.png');
         game.load.image('food3', 'assets/food3.png');
         game.load.image('food4', 'assets/food4.png');
-        game.load.image('food4', 'assets/food5.png');
+        game.load.image('food5', 'assets/food5.png');
 
         game.load.image('background', 'assets/background.png');
         game.load.image('background2', 'assets/background2.png');
@@ -105,13 +105,16 @@ var main_state = {
 
                     if(introScreenCounter == 1) {
                         clearMap();
-                        game.add.sprite(0,0,'background');
+                        var bg = game.add.sprite(0,0,'background');
+                        bg.fixedToCamera = true;
                     } else if (introScreenCounter == 45) {
                         clearMap();
-                        game.add.sprite(0,0,'background2');
+                        var bg = game.add.sprite(0,0,'background2');
+                        bg.fixedToCamera = true;
                     } else if (introScreenCounter == 90) {
                         clearMap();
-                        game.add.sprite(0,0,'background');
+                        var bg = game.add.sprite(0,0,'background');
+                        bg.fixedToCamera = true;
                         introScreenCounter = 0;
                     }
                 }
@@ -141,14 +144,16 @@ var main_state = {
                 // go to end game page
                 //NEW CHANGE
                 clearMap();
-                game.add.sprite(0,0,'liveBackground');
+                var bg = game.add.sprite(0,0,'liveBackground');
+                bg.fixedToCamera = true;
                 if(keyEnter.isDown) {
                     resetGame();                    
                 }
             } else if (gameStatus === "lose") {
                 //NEW CHANGE
                 clearMap();
-                game.add.sprite(0,0,'deathBackground');
+                var bg = game.add.sprite(0,0,'deathBackground');
+                bg.fixedToCamera = true;
                 if(keyEnter.isDown) {
                     resetGame();                    
                 }
@@ -156,12 +161,14 @@ var main_state = {
                 //already incremented level in checkHasWon
                 if(pokemonTextCounter == 0) {
                     clearMap();
-                    game.add.sprite(0,0,'transitionBackground');
+                    var bg = game.add.sprite(0,0,'transitionBackground');
+                    bg.fixedToCamera = true;
                 }
 
                 if(pokemonTextCounter < currentPokemonText.length + 1) {
                     //NEW CHANGE
                     labelFoodRequired = game.add.text(175, 140, currentPokemonText.substring(0,pokemonTextCounter), { font: "24px Telugu", fill: "#000000" });         
+                    labelFoodRequired.fixedToCamera = true;
                     
                     pokemonTextCounter++;
                 }
@@ -249,6 +256,7 @@ function checkAllFoods() {
             foodCollected = foodCollected + 5;
             this.game.world.remove(labelFoodRequired);
             labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+            labelFoodRequired.fixedToCamera = true;
             i = i - 1;
         }
     }
@@ -276,6 +284,7 @@ function updateTimer() {
         this.game.world.remove(labelTimer);
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toFixed(2), { font: "30px Arial", fill: "#ffffff" });         
     }
+    labelTimer.fixedToCamera = true;
 }
 
 /*
@@ -342,7 +351,6 @@ function populateMap() {
         game.physics.p2.enable(player.img);
         game.camera.follow(player.img);
 
-
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(155, 165);
         food1.setImage(game, 'food1');
@@ -365,21 +373,25 @@ function populateMap() {
         food10 = new Food(355, 65);
         food10.setImage(game, 'food5');
         foodArray = [food1, food2, food3, food4, food5, food6, food7, food8, food9, food10]; 
-    if(level == 1) {
 
+    if(level == 1) {
         
         foodRequired = 20;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+        labelFoodRequired.fixedToCamera = true;
 
         timer = 50.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
 
         foodArray = [food1, food2, food3, food4,food5,food6,food7];         
+
     } else if (level == 2) {
+
         foodRequired = 25;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+        labelFoodRequired.fixedToCamera = true;
 
         timer = 45.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
@@ -390,17 +402,17 @@ function populateMap() {
         foodRequired = 40;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+        labelFoodRequired.fixedToCamera = true;
 
         timer = 35.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
-
          
     } else if (level == 4) {
-
 
         foodRequired = 50;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
+        labelFoodRequired.fixedToCamera = true;
 
         timer = 25.0;
         labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
