@@ -256,9 +256,9 @@ function updateTimer() {
     Allows keystrokes to manipulate character in game
 */
 function playControl() {
-    //player control
-    player.img.body.setZeroVelocity();
 
+    player.img.body.setZeroVelocity();
+    
     if (cursors.up.isDown) {
         player.moveUp(bmd);
     }
@@ -280,10 +280,10 @@ function collides(a, b)
     if(a == null || b == null) {
         return false;
     }
-    if (a.x < b.x + b.img.width &&
-        a.x + a.img.width > b.x &&
-        a.y < b.y + b.img.height &&
-        a.y + a.img.height > b.y) return true;
+    if (a.img.x < b.img.x + b.img.width &&
+        a.img.x + a.img.width > b.img.x &&
+        a.img.y < b.img.y + b.img.height &&
+        a.img.y + a.img.height > b.img.y) return true;
 }
 
 /*
