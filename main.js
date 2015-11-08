@@ -43,8 +43,16 @@ var main_state = {
         game.load.image('background', 'assets/background.png');
         game.load.image('background2', 'assets/background2.png');
 
-        game.load.image('walls', 'assets/level1Walls.bmp');
+        game.load.image('walls1', 'assets/level1Walls.bmp');
+        game.load.image('walls2', 'assets/level2Walls.bmp');
+        game.load.image('walls3', 'assets/level3Walls.bmp');
+        game.load.image('walls4', 'assets/level4Walls.bmp');
+        game.load.image('walls5', 'assets/level5Walls.bmp');
         game.load.image('level1bg', 'assets/level1bg.png');
+        game.load.image('level2bg', 'assets/level2bg.png');
+        game.load.image('level3bg', 'assets/level3bg.png');
+        game.load.image('level4bg', 'assets/level4bg.png');
+        game.load.image('level5bg', 'assets/level5bg.png');
     },
 
 
@@ -53,10 +61,6 @@ var main_state = {
          this will be called repeatedly as the levels increase.
     */
     create: function () {
-        bmd = game.make.bitmapData(4000, 4000);
-        bmd.draw(game.cache.getImage('walls'), 0, 0);
-        bmd.update();
-
         game.world.setBounds(0, 0, 4000, 4000);
         game.physics.startSystem(Phaser.Physics.P2JS);
 
@@ -258,7 +262,7 @@ function updateTimer() {
 function playControl() {
 
     player.img.body.setZeroVelocity();
-    
+
     if (cursors.up.isDown) {
         player.moveUp(bmd);
     }
@@ -292,6 +296,9 @@ function collides(a, b)
 function populateMap() {
 
     if(level == 1) {
+        bmd = game.make.bitmapData(4000, 4000);
+        bmd.draw(game.cache.getImage('walls1'), 0, 0);
+        bmd.update();
 
         game.add.tileSprite(0, 0, 4000, 4000, 'level1bg');
 
@@ -328,6 +335,12 @@ function populateMap() {
         food4.setImage(game, 'food4');
         foodArray = [food1, food2, food3, food4];         
     } else if (level == 2) {
+        bmd = game.make.bitmapData(4000, 4000);
+        bmd.draw(game.cache.getImage('walls2'), 0, 0);
+        bmd.update();
+
+        game.add.tileSprite(0, 0, 4000, 4000, 'level2bg');
+
         foodRequired = 20;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
@@ -347,6 +360,8 @@ function populateMap() {
 
         player = new Player(125, 250);
         player.setImage(game, 'player');
+        game.physics.p2.enable(player.img);
+        game.camera.follow(player.img);
 
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(155, 165);
@@ -359,6 +374,12 @@ function populateMap() {
         food4.setImage(game, 'food4');
         foodArray = [food1, food2, food3, food4];  
     } else if (level == 3) {
+        bmd = game.make.bitmapData(4000, 4000);
+        bmd.draw(game.cache.getImage('walls3'), 0, 0);
+        bmd.update();
+
+        game.add.tileSprite(0, 0, 4000, 4000, 'level3bg');
+
         foodRequired = 20;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
@@ -378,6 +399,8 @@ function populateMap() {
 
         player = new Player(125, 250);
         player.setImage(game, 'player');
+        game.physics.p2.enable(player.img);
+        game.camera.follow(player.img);
 
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(155, 165);
@@ -390,6 +413,12 @@ function populateMap() {
         food4.setImage(game, 'food4');
         foodArray = [food1, food2, food3, food4];          
     } else if (level == 4) {
+        bmd = game.make.bitmapData(4000, 4000);
+        bmd.draw(game.cache.getImage('walls4'), 0, 0);
+        bmd.update();
+
+        game.add.tileSprite(0, 0, 4000, 4000, 'level4bg');
+
         foodRequired = 20;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
@@ -409,6 +438,8 @@ function populateMap() {
 
         player = new Player(125, 250);
         player.setImage(game, 'player');
+        game.physics.p2.enable(player.img);
+        game.camera.follow(player.img);
 
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(155, 165);
@@ -421,6 +452,12 @@ function populateMap() {
         food4.setImage(game, 'food4');
         foodArray = [food1, food2, food3, food4];          
     } else if (level == 5) {
+        bmd = game.make.bitmapData(4000, 4000);
+        bmd.draw(game.cache.getImage('walls5'), 0, 0);
+        bmd.update();
+
+        game.add.tileSprite(0, 0, 4000, 4000, 'level5bg');
+
          foodRequired = 20;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
@@ -440,6 +477,8 @@ function populateMap() {
 
         player = new Player(125, 250);
         player.setImage(game, 'player');
+        game.physics.p2.enable(player.img);
+        game.camera.follow(player.img);
 
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(155, 165);
