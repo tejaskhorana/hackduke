@@ -1,6 +1,8 @@
 var game = new Phaser.Game(1200, 800, Phaser.AUTO, 'game_div');
 
-var keyUp, keyDown, keyLeft, keyRight, keyEnter;
+var bmd;
+
+var keyEnter;
 
 var player;
 
@@ -41,13 +43,21 @@ var main_state = {
         game.load.image('background', 'assets/background.png');
         game.load.image('background2', 'assets/background2.png');
 
+
         game.load.image('transitionBackground', 'assets/transitionBackground.png');
 
-        //NEW CHANGE
         game.load.image('deathBackground', 'assets/deathBackground.png');
         game.load.image('liveBackground', 'assets/liveBackground.png');
-
-
+        game.load.image('walls1', 'assets/level1Walls.bmp');
+        game.load.image('walls2', 'assets/level2Walls.bmp');
+        game.load.image('walls3', 'assets/level3Walls.bmp');
+        game.load.image('walls4', 'assets/level4Walls.bmp');
+        game.load.image('walls5', 'assets/level5Walls.bmp');
+        game.load.image('level1bg', 'assets/level1bg.png');
+        game.load.image('level2bg', 'assets/level2bg.png');
+        game.load.image('level3bg', 'assets/level3bg.png');
+        game.load.image('level4bg', 'assets/level4bg.png');
+        game.load.image('level5bg', 'assets/level5bg.png');
     },
 
 
@@ -56,13 +66,12 @@ var main_state = {
          this will be called repeatedly as the levels increase.
     */
     create: function () {
+        game.world.setBounds(0, 0, 4000, 4000);
+        game.physics.startSystem(Phaser.Physics.P2JS);
 
-        //SET UP KEYSTROKES for the entire game.
-        keyUp = game.input.keyboard.addKey(Phaser.Keyboard.UP);
-        keyDown = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-        keyLeft = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-        keyRight = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+        // Set up keyEnter
         keyEnter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        cursors = game.input.keyboard.createCursorKeys();
 
         //SET UP rest of map. Will change per level
         gameStatus = "intro";
@@ -75,7 +84,6 @@ var main_state = {
         initializeAllPokemonText();
         currentPokemonText = pokemonTextOne;
         //game.add.sprite(0, 0, 'background');
-
     },
 
     update: function () {
@@ -152,7 +160,7 @@ var main_state = {
 
                 if(pokemonTextCounter < currentPokemonText.length + 1) {
                     //NEW CHANGE
-                    labelFoodRequired = game.add.text(175, 140, currentPokemonText.substring(0,pokemonTextCounter), { font: "30px Telugu", fill: "#000000" });         
+                    labelFoodRequired = game.add.text(175, 140, currentPokemonText.substring(0,pokemonTextCounter), { font: "24px Telugu", fill: "#000000" });         
                     
                     pokemonTextCounter++;
                 }
@@ -258,35 +266,37 @@ function checkHasLost() {
     Allows Timer to update in game
 */
 function updateTimer() {
-        if(timer > 0) {
-            timer -= 1/60;
-            this.game.world.remove(labelTimer);
-            labelTimer = game.add.text(20, 40, "Timer: " + timer.toFixed(2), { font: "30px Arial", fill: "#ffffff" });         
-        } else if (gameStatus == 'in_game') {
-            timer = 0;
-            this.game.world.remove(labelTimer);
-            labelTimer = game.add.text(20, 40, "Timer: " + timer.toFixed(2), { font: "30px Arial", fill: "#ffffff" });         
-        }
+    if(timer > 0) {
+        timer -= 1/60;
+        this.game.world.remove(labelTimer);
+        labelTimer = game.add.text(20, 40, "Timer: " + timer.toFixed(2), { font: "30px Arial", fill: "#ffffff" });         
+    } else if (gameStatus == 'in_game') {
+        timer = 0;
+        this.game.world.remove(labelTimer);
+        labelTimer = game.add.text(20, 40, "Timer: " + timer.toFixed(2), { font: "30px Arial", fill: "#ffffff" });         
+    }
 }
 
 /*
     Allows keystrokes to manipulate character in game
 */
 function playControl() {
-        //player control
-        if (keyUp.isDown) {
-            player.moveUp();
-        }
-        if (keyDown.isDown) {
-            player.moveDown();
-        }
 
-        if (keyLeft.isDown) {
-            player.moveLeft();
-        }
-        if (keyRight.isDown) {
-            player.moveRight();
-        }    
+    player.img.body.setZeroVelocity();
+
+    if (cursors.up.isDown) {
+        player.moveUp(bmd);
+    }
+    else if (cursors.down.isDown) {
+        player.moveDown(bmd);
+    }
+
+    if (cursors.left.isDown) {
+        player.moveLeft(bmd);
+    }
+    else if (cursors.right.isDown) {
+        player.moveRight(bmd);
+    }
 }
 
 
@@ -295,10 +305,10 @@ function collides(a, b)
     if(a == null || b == null) {
         return false;
     }
-    if (a.x < b.x + b.img.width &&
-        a.x + a.img.width > b.x &&
-        a.y < b.y + b.img.height &&
-        a.y + a.img.height > b.y) return true;
+    if (a.img.x < b.img.x + b.img.width &&
+        a.img.x + a.img.width > b.img.x &&
+        a.img.y < b.img.y + b.img.height &&
+        a.img.y + a.img.height > b.img.y) return true;
 }
 
 /*
@@ -307,6 +317,12 @@ function collides(a, b)
 function populateMap() {
 
     if(level == 1) {
+        bmd = game.make.bitmapData(4000, 4000);
+        bmd.draw(game.cache.getImage('walls1'), 0, 0);
+        bmd.update();
+
+        game.add.tileSprite(0, 0, 4000, 4000, 'level1bg');
+
         foodRequired = 20;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
@@ -326,6 +342,8 @@ function populateMap() {
 
         player = new Player(125, 250);
         player.setImage(game, 'player');
+        game.physics.p2.enable(player.img);
+        game.camera.follow(player.img);
 
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(155, 165);
@@ -338,6 +356,12 @@ function populateMap() {
         food4.setImage(game, 'food4');
         foodArray = [food1, food2, food3, food4];         
     } else if (level == 2) {
+        bmd = game.make.bitmapData(4000, 4000);
+        bmd.draw(game.cache.getImage('walls2'), 0, 0);
+        bmd.update();
+
+        game.add.tileSprite(0, 0, 4000, 4000, 'level2bg');
+
         foodRequired = 20;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
@@ -357,6 +381,8 @@ function populateMap() {
 
         player = new Player(125, 250);
         player.setImage(game, 'player');
+        game.physics.p2.enable(player.img);
+        game.camera.follow(player.img);
 
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(155, 165);
@@ -369,6 +395,12 @@ function populateMap() {
         food4.setImage(game, 'food4');
         foodArray = [food1, food2, food3, food4];  
     } else if (level == 3) {
+        bmd = game.make.bitmapData(4000, 4000);
+        bmd.draw(game.cache.getImage('walls3'), 0, 0);
+        bmd.update();
+
+        game.add.tileSprite(0, 0, 4000, 4000, 'level3bg');
+
         foodRequired = 20;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
@@ -388,6 +420,8 @@ function populateMap() {
 
         player = new Player(125, 250);
         player.setImage(game, 'player');
+        game.physics.p2.enable(player.img);
+        game.camera.follow(player.img);
 
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(155, 165);
@@ -400,6 +434,12 @@ function populateMap() {
         food4.setImage(game, 'food4');
         foodArray = [food1, food2, food3, food4];          
     } else if (level == 4) {
+        bmd = game.make.bitmapData(4000, 4000);
+        bmd.draw(game.cache.getImage('walls4'), 0, 0);
+        bmd.update();
+
+        game.add.tileSprite(0, 0, 4000, 4000, 'level4bg');
+
         foodRequired = 20;
         foodCollected = 0;
         labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
@@ -419,6 +459,8 @@ function populateMap() {
 
         player = new Player(125, 250);
         player.setImage(game, 'player');
+        game.physics.p2.enable(player.img);
+        game.camera.follow(player.img);
 
         //initialize ALL food in designated spots and assign to an array
         food1 = new Food(155, 165);
@@ -430,7 +472,9 @@ function populateMap() {
         food4 = new Food(355, 65);
         food4.setImage(game, 'food4');
         foodArray = [food1, food2, food3, food4];          
+
     } 
+
 }
 
 game.state.add('main', main_state);
