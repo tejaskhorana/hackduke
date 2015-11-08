@@ -41,6 +41,13 @@ var main_state = {
         game.load.image('background', 'assets/background.png');
         game.load.image('background2', 'assets/background2.png');
 
+        game.load.image('transitionBackground', 'assets/transitionBackground.png');
+
+        //NEW CHANGE
+        game.load.image('deathBackground', 'assets/deathBackground.png');
+        game.load.image('liveBackground', 'assets/liveBackground.png');
+
+
     },
 
 
@@ -59,7 +66,7 @@ var main_state = {
 
         //SET UP rest of map. Will change per level
         gameStatus = "intro";
-        maxLevels = 5;
+        maxLevels = 4;
 
         //RESET THIS DURING CLEAN UP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //UNCOMMENT PLZZZZZZZZZZ!!!
@@ -78,11 +85,9 @@ var main_state = {
 
                 if (keyEnter.isDown) {
 
-
                         level = 1;
                         gameStatus = "next_level";             
-                    
-
+                
 
                 } else {
                     
@@ -125,18 +130,30 @@ var main_state = {
                 checkHasLost();
             } else if (gameStatus == "win") {
                 // go to end game page
-                console.log("win");
+                //NEW CHANGE
+                clearMap();
+                game.add.sprite(0,0,'liveBackground');
+                if(keyEnter.isDown) {
+                    resetGame();                    
+                }
             } else if (gameStatus === "lose") {
-                console.log("lose");
+                //NEW CHANGE
+                clearMap();
+                game.add.sprite(0,0,'deathBackground');
+                if(keyEnter.isDown) {
+                    resetGame();                    
+                }
             } else if (gameStatus == "next_level") {
                 //already incremented level in checkHasWon
                 if(pokemonTextCounter == 0) {
                     clearMap();
+                    game.add.sprite(0,0,'transitionBackground');
                 }
 
                 if(pokemonTextCounter < currentPokemonText.length + 1) {
-                    //LOLOLOL
-                    labelFoodRequired = game.add.text(20, 10, currentPokemonText.substring(0,pokemonTextCounter), { font: "30px Arial", fill: "#ffffff" });         
+                    //NEW CHANGE
+                    labelFoodRequired = game.add.text(175, 140, currentPokemonText.substring(0,pokemonTextCounter), { font: "30px Telugu", fill: "#000000" });         
+                    
                     pokemonTextCounter++;
                 }
 
@@ -154,6 +171,13 @@ var main_state = {
             }
         }
 }
+//NEW CHANGE
+function resetGame() {
+        introScreenCounter = 0;
+        pokemonTextCounter = 0;
+        currentPokemonText = pokemonTextOne;
+        gameStatus = "intro";
+}
 
 function nextPokemonText() {
     if(currentPokemonText === pokemonTextOne) {
@@ -170,11 +194,10 @@ function nextPokemonText() {
 }
 
 function initializeAllPokemonText() {
-    pokemonTextOne = "Swiggity Swooty: Level One....... \n\n\n\n HIT ENTER";
-    pokemonTextTwo = "I'm comin: Level Two....... \n\n\n\n HIT ENTER";
-    pokemonTextThree = "For dat: Level Three....... \n\n\n\n HIT ENTER";
-    pokemonTextFour = "boootay: Level Four....... \n\n\n\n HIT ENTER";
-    pokemonTextFive = "!!!: Level Five....... \n\n\n\n HIT ENTER";
+    pokemonTextOne = "Welcome to the top level of the Tower! In this\n world, Dantie is a rich businessman and founder\n of a massive software company called\n Macrosoft. He has several key executives\n working underneath him and therefore only has\n to work a few hours a day. He has\n plenty of money and time, free to enjoy the luxu-\nries of the Tower. His house is nice and spacious,\n the epitome of modern decadence.\n Today, Dante has to eat three meals, put in a\n few hours of work at the Macrosoft building next\n door, and just enjoy the town before he has to\n head back home to catch some sleep.\n Good luck!.... HIT ENTER";
+    pokemonTextTwo = "Welcome to the second level of the Tower! In\n this world, Dante is a branch manager of\n Moontrust, the only bank in the Tower. he has\n a couple of employees working for him, but he\n still has to work one shift a day. he is fairly well\n off, and he and his wife enjoy their life in the\n Tower. his house is pretty nice, though they\n have to share the other half with another resi-\n dent. \n Today, Dante just has to eat three meals, \nput in some hours of work at the bank, and \nmaybe have a short walk around town before \nhe heads back home to go to bed. Good luck!\n.... HIT ENTER";
+    pokemonTextThree = "Welcome to the third level of the Tower. In\n this world, Dante is a clerk at the grocery\n store, Jingles. He works two shifts and is\n under a fair amount of stress every day.\n He can barely support his family of\n three and he barely has time to eat,\n let alone enjoy himself.\n His family share the house with three other\n families, and it is often dank and cramped.\n Today, Dante has to eat three meals, put in\n several hours of work at the store, and make\n sure he gets everything done in time before\n he needs to sleep. Good luck.... HIT ENTER";
+    pokemonTextFour = "Welcome to the bottom level of the Tower. In this\n world, Dante is a poor waiter at Outfront, a\n restaurant in the corner of town. he alone has to\n support his family of four, and therefore he works\n the entire day at the restaurant. he does not even\n have enough money to afford to eat there; he has to\n get his food at the store after work before it closes.\n Dante is often stressed and tired, but there is nothing\n he can do about it. his family shares their meager\n quarters with six other families in their building.\n Today, Dante just has to eat three meals, work at\n the restaurant for most of the day, go to the store\n before it closes, and make it back home to get\n enough sleep for the next day.\n Good luck! .... HIT ENTER!";
 }
 
 function clearMap() {
@@ -183,7 +206,7 @@ function clearMap() {
 
 function checkHasWon() {
     if(foodCollected >= foodRequired) {
-        if(level == 5) {
+        if(level == 4) {
             gameStatus = "win";
         } else {
             gameStatus = "next_level";
@@ -407,38 +430,7 @@ function populateMap() {
         food4 = new Food(355, 65);
         food4.setImage(game, 'food4');
         foodArray = [food1, food2, food3, food4];          
-    } else if (level == 5) {
-         foodRequired = 20;
-        foodCollected = 0;
-        labelFoodRequired = game.add.text(20, 10, "Food Collected: " + foodCollected + "/" + foodRequired, { font: "30px Arial", fill: "#ffffff" });         
-
-        timer = 10.0;
-        labelTimer = game.add.text(20, 40, "Timer: " + timer.toString(), { font: "30px Arial", fill: "#ffffff" }); 
-
-        //initialize ALL persons in designated spots and assign to an array
-        person1 = new Person(450, 450, 100, 40, (Math.random()-.5)*4, (Math.random()-.5)*5);
-        person1.setImage(game, 'person1');
-        person2 = new Person(350, 250, 70, 70, (Math.random()-.5)*5, (Math.random()-.5)*8);
-        person2.setImage(game, 'person2');
-        person3 = new Person(550, 350, 100, 100, (Math.random()-.5)*8, (Math.random()-.5)*5);
-        person3.setImage(game, 'person3');
-
-        personArray = [person1, person2, person3];
-
-        player = new Player(125, 250);
-        player.setImage(game, 'player');
-
-        //initialize ALL food in designated spots and assign to an array
-        food1 = new Food(155, 165);
-        food1.setImage(game, 'food1');
-        food2 = new Food(255, 165);
-        food2.setImage(game, 'food2');
-        food3 = new Food(355, 165);
-        food3.setImage(game, 'food3');
-        food4 = new Food(355, 65);
-        food4.setImage(game, 'food4');
-        foodArray = [food1, food2, food3, food4];         
-    }
+    } 
 }
 
 game.state.add('main', main_state);
