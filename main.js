@@ -364,6 +364,7 @@ function populateMap() {
         labelTimer.fixedToCamera = true;
 
         //initialize ALL food in designated spots and assign to an array
+<<<<<<< HEAD
         foodArray = [];
         foodArray.push(new Food(1045, 1200));
         foodArray[0].setImage(game, 'food1');
@@ -393,6 +394,29 @@ function populateMap() {
         foodArray[12].setImage(game, 'food1');
         foodArray.push(new Food(1005, 3790));
         foodArray[13].setImage(game, 'food1');
+=======
+        food1 = new Food(400, 3680);
+        food1.setImage(game, 'food1');
+        food2 = new Food(2750, 330);
+        food2.setImage(game, 'food2');
+        food3 = new Food(1190, 827);
+        food3.setImage(game, 'food3');
+        food4 = new Food(1737, 370);
+        food4.setImage(game, 'food4');
+        food5 = new Food(300, 2648);
+        food5.setImage(game, 'food5');
+        food6 = new Food(100, 2584);
+        food6.setImage(game, 'food1');
+        food7 = new Food(1487, 2689);
+        food7.setImage(game, 'food2');
+        food8 = new Food(322, 3702);
+        food8.setImage(game, 'food3');
+        food9 = new Food(250, 3812);
+        food9.setImage(game, 'food4');
+        food10 = new Food(400, 3480);
+        food10.setImage(game, 'food5');
+        foodArray = [food1, food2, food3, food4, food5, food6, food7, food8, food9, food10];          
+>>>>>>> 470ad32b984e5a5f1efcb2056fd9480e6a6df582
 
     } else if (level == 2) {
 
