@@ -170,11 +170,11 @@ function nextPokemonText() {
 }
 
 function initializeAllPokemonText() {
-    pokemonTextOne = "Swiggity Swooty: Level One";
-    pokemonTextTwo = "I'm comin: Level Two";
-    pokemonTextThree = "For dat: Level Three";
-    pokemonTextFour = "boootay: Level Four";
-    pokemonTextFive = "!!!: Level Five";
+    pokemonTextOne = "Swiggity Swooty: Level One....... \n\n\n\n HIT ENTER";
+    pokemonTextTwo = "I'm comin: Level Two....... \n\n\n\n HIT ENTER";
+    pokemonTextThree = "For dat: Level Three....... \n\n\n\n HIT ENTER";
+    pokemonTextFour = "boootay: Level Four....... \n\n\n\n HIT ENTER";
+    pokemonTextFive = "!!!: Level Five....... \n\n\n\n HIT ENTER";
 }
 
 function clearMap() {
