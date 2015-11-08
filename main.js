@@ -1,6 +1,6 @@
 var game = new Phaser.Game(1200, 800, Phaser.AUTO, 'game_div');
 
-var keyUp, keyDown, keyLeft, keyRight;
+var keyUp, keyDown, keyLeft, keyRight, keyEnter;
 
 var player;
 
@@ -16,7 +16,7 @@ var foodRequired, foodCollected, timer, gameStatus;
 
 var labelFoodRequired, labelTimer;
 
-var gameInSession;
+var introScreenCounter;
 
 var main_state = {
 
@@ -36,6 +36,9 @@ var main_state = {
         game.load.image('food3', 'assets/food3.png');
         game.load.image('food4', 'assets/food4.png');
 
+        game.load.image('background', 'assets/background.png');
+        game.load.image('background2', 'assets/background2.png');
+
     },
 
 
@@ -50,19 +53,49 @@ var main_state = {
         keyDown = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
         keyLeft = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
         keyRight = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+        keyEnter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
         //SET UP rest of map. Will change per level
-        level = 1;
-        gameStatus = 'in_game';
+        gameStatus = "intro";
         maxLevels = 5;
-        populateMap();
-        gameInSession = true;
+
+        introScreenCounter = 0;
+        game.add.sprite(0, 0, 'background');
 
     },
 
     update: function () {
         
-            if(gameStatus == "in_game") {
+
+            if (gameStatus == "intro") {
+
+                if (keyEnter.isDown) {
+                    level = 1;
+                    clearMap();
+                    populateMap();
+                    gameStatus = "in_game";
+                } else {
+                    
+                    //alternate the images!
+                    introScreenCounter = introScreenCounter + 1;
+
+                    if(introScreenCounter == 1) {
+                        clearMap();
+                        game.add.sprite(0,0,'background');
+                    } else if (introScreenCounter == 50) {
+                        clearMap();
+                        game.add.sprite(0,0,'background2');
+                    } else if (introScreenCounter == 100) {
+                        clearMap();
+                        game.add.sprite(0,0,'background');
+                        introScreenCounter = 0;
+                    }
+
+
+                }
+
+            }    
+            else if(gameStatus == "in_game") {
                 //move all people on map
                 moveAllPeople();
 
@@ -84,7 +117,6 @@ var main_state = {
                 // go to end game page
                 console.log("win");
             } else if (gameStatus === "lose") {
-                // go to appropriate losing page
                 console.log("lose");
             } else if (gameStatus == "next_level") {
                 //already incremented level in checkHasWon
